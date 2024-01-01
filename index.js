@@ -4,6 +4,8 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 
+const current_id = 1;
+
 const todos = [
   {
     id: 1,
@@ -13,6 +15,26 @@ const todos = [
 ];
 
 app.get("/", (req, res) => {
+  res.send(JSON.stringify(todos));
+});
+
+app.post("/add", (req, res) => {
+  const data = req.body;
+  console.log({ data });
+  todos.push({
+    id: current_id + 1,
+    ...data,
+  });
+  res.send(JSON.stringify(todos));
+});
+
+app.delete("/delete", (req, res) => {
+  const data = req.body;
+  const { id } = data;
+
+  const ind = todos.findIndex((todo) => todo.id === id);
+  todos.splice(ind);
+
   res.send(JSON.stringify(todos));
 });
 
